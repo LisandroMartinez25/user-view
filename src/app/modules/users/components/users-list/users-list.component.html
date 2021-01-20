@@ -1,0 +1,103 @@
+<mat-card class="card">
+  <mat-card-header>
+    <mat-form-field appearance="outline">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput placeholder="Busqueda">
+      <mat-label>Busqueda</mat-label>
+    </mat-form-field>
+
+    <div class="spacer"></div>
+
+    <mat-form-field appearance="outline" class="mr-15">
+      <mat-label>Por página</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let option of optionsPerPage" [value]="option.value">{{ option.label }} por página</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="mr-15">
+      <mat-label>Orden</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let option of optionsOrder" [value]="option.value">{{ option.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline" class="mr-15">
+      <mat-label>Status</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let option of optionsStatus" [value]="option.value">{{ option.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-button [ngClass]="{'c-orange': viewList}" (click)="viewList = true"><mat-icon>view_list</mat-icon></button>
+    <button mat-button [ngClass]="{'c-orange': !viewList}" (click)="viewList = false"><mat-icon>view_module</mat-icon></button>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <table mat-table
+       [dataSource]="dataSource" 
+       cdkDropList
+       [cdkDropListData]="dataSource"
+       (cdkDropListDropped)="drop($event)">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" cdkDragHandle> <mat-icon class="icon-drag">drag_indicator</mat-icon> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="picture">
+        <th mat-header-cell *matHeaderCellDef> Foto </th>
+        <td mat-cell *matCellDef="let element"> <div class="circulo"><img src="{{element.picture}}" alt=""></div> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fathersLastName">
+        <th mat-header-cell *matHeaderCellDef> Apellido Paterno </th>
+        <td mat-cell *matCellDef="let element"> {{element.fathersLastName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="mothersLastName">
+        <th mat-header-cell *matHeaderCellDef> Apellido </th>
+        <td mat-cell *matCellDef="let element"> {{element.mothersLastName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef > Correo </th>
+        <td mat-cell *matCellDef="let element"> <p class="col">{{element.email}}</p>  </td>
+      </ng-container>
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef> Rol </th>
+        <td mat-cell *matCellDef="let element"> {{element.role.position}} </td>
+      </ng-container>
+      <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef> Estatus </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-slide-toggle
+            color='primary'
+            [checked]="element.active"
+            (click)="updateUserStatus(element.email)">
+          </mat-slide-toggle>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button class="c-orange"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button class="c-orange"><mat-icon>delete</mat-icon></button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns;"
+        cdkDrag
+        cdkDragLockAxis="y"
+        [cdkDragData]="row"
+        class="row"
+        [ngClass]="{'rowSelected': row === userSelected}"
+        (click)="selectRow(row)"
+      ></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

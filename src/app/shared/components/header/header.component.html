@@ -1,0 +1,13 @@
+<mat-toolbar class="toolbar">
+  <div>
+    <img class="img-jaque" src="../../../../assets/logo.PNG" alt="Jaque test">
+  </div>
+  <span class="spacer"></span>
+  <button mat-raised-button [matMenuTriggerFor]="menu">
+    <mat-icon>person_outline</mat-icon> Guillermo Sánchez <mat-icon class="c-orange">expand_more</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Item 1</button>
+    <button mat-menu-item>Item 2</button>
+  </mat-menu>
+</mat-toolbar>
